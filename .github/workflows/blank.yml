@@ -41,6 +41,8 @@ jobs:
         run: |
           echo "Hello, world!" > example.txt
           echo "This is a test file." >> example.txt
+      - name: List files
+        run: ls -l -a
   ls:
     needs: create-file
     runs-on: ubuntu-latest
