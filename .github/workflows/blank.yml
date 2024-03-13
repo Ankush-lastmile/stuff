@@ -34,3 +34,12 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+  
+  ls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List files
+        run: ls -l -a
+      - name: pwd:
+        run: pwd 
+
