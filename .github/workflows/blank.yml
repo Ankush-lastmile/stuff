@@ -43,10 +43,18 @@ jobs:
           echo "This is a test file." >> example.txt
       - name: List files
         run: ls -l -a
+      - uses: actions/upload-artifact@master
+        with:
+          name: my-artifact
+          path: example.txt
   ls:
     needs: create-file
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: my-artifact
+          path: example.txt
       - name: List files
         run: ls -l -a
       - name: pwd
