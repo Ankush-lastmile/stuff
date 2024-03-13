@@ -34,8 +34,15 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-
+  create-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create file
+        run: |
+          echo "Hello, world!" > example.txt
+          echo "This is a test file." >> example.txt
   ls:
+    needs: create-file
     runs-on: ubuntu-latest
     steps:
       - name: List files
