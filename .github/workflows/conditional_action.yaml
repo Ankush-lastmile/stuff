@@ -1,0 +1,20 @@
+name: Conditional Step Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      should_run:
+        description: "Specify if the extra step should run"
+        required: false
+        default: "no"
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Always Run Step
+        run: echo "This step always runs."
+
+      - name: Conditional Step
+        if: ${{ github.event.inputs.should_run == 'yes' }}
+        run: echo "This step runs only if the 'should_run' input is 'yes'."
