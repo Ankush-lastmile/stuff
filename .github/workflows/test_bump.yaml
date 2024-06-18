@@ -1,6 +1,6 @@
 # This is a basic workflow to version bump pyproject.toml in github actions
 
-name: CI
+name: test bump
 
 # Controls when the workflow will run
 on:
