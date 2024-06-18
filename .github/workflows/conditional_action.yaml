@@ -7,6 +7,9 @@ on:
         description: "Specify if the extra step should run"
         required: false
         default: "no"
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   example_job:
@@ -22,5 +25,10 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10" # don't know what the impact of this is
-      - name: Update version
-        uses: kurtmc/github-action-python-versioner@v1
+      - name: Get version number
+        id: get_version
+        run: |
+          version=$(python -c "print(next(line.split('=')[1].strip().strip('\"') for line in open('pyproject.toml') if line.startswith('version')))")
+          echo "version=$version" >> $GITHUB_OUTPUT
+      - name: Echo Version
+        run: echo "Version is ${{ steps.get_version.outputs.version }}"
