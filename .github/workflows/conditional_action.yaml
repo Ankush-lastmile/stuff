@@ -19,10 +19,5 @@ jobs:
         if: ${{ github.event.inputs.should_run == 'yes' }}
         run: echo "This step runs only if the 'should_run' input is 'yes'."
 
-      - name: Check Python Version
-        uses: samuelcolvin/check-python-version@v1
-        id: check-python-version
-        with:
-          version_file_path: pyproject.toml
-      - name: Print Python Version
-        run: echo "Python version is ${{ steps.check-python-version.outputs.VERSION }}"
+      - name: Update version
+        uses: kurtmc/github-action-python-versioner@v1
