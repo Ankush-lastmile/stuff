@@ -4,14 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: "Log level"
+        description: "Auto-Bump Patch Version"
         required: true
-        default: "warning"
+        default: "no"
         type: choice
         options:
-          - info
-          - warning
-          - debug
+          - no
+          - yes
 
 jobs:
   increment-version:
