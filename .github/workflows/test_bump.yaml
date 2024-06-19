@@ -3,7 +3,7 @@ name: Increment Version and Push
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
+      bumpPatchVersion:
         description: "Auto-Bump Patch Version"
         required: true
         default: "no"
@@ -26,10 +26,12 @@ jobs:
           python-version: "3.x"
 
       - name: Increment version in pyproject.toml
+        if: ${{ github.event.inputs.bumpPatchVersion == 'yes' }}
         run: |
           python -c "import re; open('pyproject.toml', 'r+', encoding='utf-8').write(re.sub(r'(version\s*=\s*\"\\d+\\.\\d+\\.)(\\d+)', lambda m: f'{m.group(1)}{int(m.group(2))+1}', open('pyproject.toml').read()))"
 
       - name: Commit and push changes
+        if: ${{ github.event.inputs.bumpPatchVersion == 'yes' }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -38,3 +40,7 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Echo Version Number
+        run: |
+          version=$(python -c "print(next(line.split('=')[1].strip().strip('\"') for line in open('pyproject.toml') if line.startswith('version')))")
+          echo "Version is $version"
