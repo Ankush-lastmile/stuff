@@ -2,31 +2,40 @@ name: Increment Version and Push
 
 on:
   workflow_dispatch:
-
+    inputs:
+      logLevel:
+        description: "Log level"
+        required: true
+        default: "warning"
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
 
 jobs:
   increment-version:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
 
-    - name: Increment version in pyproject.toml
-      run: |
-        python -c "import re; open('pyproject.toml', 'r+', encoding='utf-8').write(re.sub(r'(version\s*=\s*\"\\d+\\.\\d+\\.)(\\d+)', lambda m: f'{m.group(1)}{int(m.group(2))+1}', open('pyproject.toml').read()))"
+      - name: Increment version in pyproject.toml
+        run: |
+          python -c "import re; open('pyproject.toml', 'r+', encoding='utf-8').write(re.sub(r'(version\s*=\s*\"\\d+\\.\\d+\\.)(\\d+)', lambda m: f'{m.group(1)}{int(m.group(2))+1}', open('pyproject.toml').read()))"
 
-    - name: Commit and push changes
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add pyproject.toml
-        git commit -m "Increment version"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add pyproject.toml
+          git commit -m "Increment version"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
