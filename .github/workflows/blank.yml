@@ -2,7 +2,7 @@
 
 name: Does-Nothing-CI
 
-# Controls when the workflow will run
+# Controls when the workflow will run 
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
@@ -34,18 +34,14 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-  create-file:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create file
-        run: |
-          echo "Hello, world!" > example.txt
-          echo "This is a test file." >> example.txt
-  ls:
-    needs: create-file
-    runs-on: ubuntu-latest
-    steps:
-      - name: List files
-        run: ls -l -a
-      - name: pwd
-        run: pwd
+      - name: Send custom JSON data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+          payload: |
+            {
+              "text": "Headsup - The python-sdk has been version bumped"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
